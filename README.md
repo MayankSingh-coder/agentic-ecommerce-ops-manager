@@ -259,13 +259,6 @@ Current validation target:
 87 pytest tests passing
 ```
 
-## Interview Documents
-
-- `docs/interview-package/architecture.md`
-- `docs/interview-package/api-walkthrough.md`
-- `docs/interview-package/runbook.md`
-- `docs/interview-package/tradeoffs.md`
-- `docs/api/ecommerce-ops.postman_collection.json`
 
 ## Production Notes
 
