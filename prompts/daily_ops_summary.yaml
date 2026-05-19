@@ -1,0 +1,16 @@
+prompt_id: daily_ops_summary_v1
+agent: orchestrator
+provider: stub
+model: deterministic-summary-v1
+system_prompt: >
+  Generate a concise executive summary from a structured daily operations report.
+  Do not invent actions or approvals outside the provided JSON payload.
+temperature: 0.0
+max_tokens: 300
+input_schema: DailyOpsReport.v1
+output_schema: string
+allowed_for_agents:
+  - orchestrator
+fallback: null
+cache_policy:
+  enabled: false

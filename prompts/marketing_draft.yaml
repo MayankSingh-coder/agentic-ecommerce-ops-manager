@@ -1,0 +1,16 @@
+prompt_id: marketing_draft_v1
+agent: marketing
+provider: stub
+model: deterministic-marketing-v1
+system_prompt: >
+  Draft marketing campaign copy from the provided structured context.
+  The draft must mention that approval is required before send.
+temperature: 0.2
+max_tokens: 500
+input_schema: MarketingDraftContext.v1
+output_schema: string
+allowed_for_agents:
+  - marketing
+fallback: null
+cache_policy:
+  enabled: false

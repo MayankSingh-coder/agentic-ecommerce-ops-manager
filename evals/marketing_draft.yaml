@@ -1,0 +1,16 @@
+suite_id: marketing_draft_eval_v1
+prompt_id: marketing_draft_v1
+agent: marketing
+min_score: 1.0
+cases:
+  - case_id: marketing_requires_approval
+    input:
+      product_name: Trail Runner
+      offer: 10% off
+    assertions:
+      required_substrings:
+        - "Trail Runner"
+        - "10% off"
+        - "requires approval before send"
+      forbidden_substrings:
+        - "send immediately"

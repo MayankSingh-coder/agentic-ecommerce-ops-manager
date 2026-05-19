@@ -1,0 +1,27 @@
+suite_id: daily_ops_summary_eval_v1
+prompt_id: daily_ops_summary_v1
+agent: orchestrator
+min_score: 1.0
+cases:
+  - case_id: daily_ops_counts
+    input:
+      inventory_alerts:
+        - sku: SKU-1001
+        - sku: SKU-1002
+      pricing_recommendations:
+        - sku: SKU-1001
+      marketing_drafts:
+        - campaign_name: Backpack offer
+      approvals_required:
+        - approval_id: APR-1
+      actions_blocked:
+        - Blocked marketing draft for SKU-1002.
+    assertions:
+      required_substrings:
+        - "2 inventory alerts"
+        - "1 pricing recommendations"
+        - "1 marketing drafts"
+        - "1 blocked actions"
+        - "1 pending approvals"
+      forbidden_substrings:
+        - "unknown"

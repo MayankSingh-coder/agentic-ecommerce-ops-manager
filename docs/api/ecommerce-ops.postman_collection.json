@@ -1,0 +1,391 @@
+{
+  "info": {
+    "_postman_id": "4b87f8c4-6db0-4df4-9ebc-agentic-ecommerce-ops",
+    "name": "Agentic E-Commerce Operations Manager",
+    "description": "FastAPI collection for seeded data inspection, demo mutations, agent runs, workflow execution, approvals, observability, and Temporal workflow start.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "api_key",
+      "value": "change-me"
+    },
+    {
+      "key": "approval_id",
+      "value": "replace-with-approval-id"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{api_key}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "Root",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/"
+          }
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/health"
+          }
+        },
+        {
+          "name": "Contracts",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/contracts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Seeded Data Reads",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/products"
+          }
+        },
+        {
+          "name": "List DB Products",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/db/products"
+          }
+        },
+        {
+          "name": "List Inventory",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/inventory"
+          }
+        },
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/orders"
+          }
+        },
+        {
+          "name": "List Returns",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/returns"
+          }
+        },
+        {
+          "name": "List Reviews",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/reviews"
+          }
+        },
+        {
+          "name": "List Competitors",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/competitors"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Data Mutations",
+      "item": [
+        {
+          "name": "Update Inventory",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"warehouse\": \"DEL-02\",\n  \"available_stock\": 1,\n  \"reserved_stock\": 1,\n  \"reorder_point\": 35,\n  \"supplier_lead_time_days\": 5,\n  \"safety_stock\": 18,\n  \"status\": \"critical\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/inventory/SKU-1003"
+          }
+        },
+        {
+          "name": "Add Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"review_id\": \"REV-DEMO-BATTERY\",\n  \"sku\": \"SKU-1003\",\n  \"rating\": 1,\n  \"title\": \"Power dies quickly\",\n  \"body\": \"The backpack accessory battery does not hold charge.\",\n  \"created_at\": \"2026-05-20T10:00:00Z\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/reviews"
+          }
+        },
+        {
+          "name": "Add Return",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"return_id\": \"RET-DEMO-SIZE\",\n  \"order_id\": \"ORD-9001\",\n  \"sku\": \"SKU-1001\",\n  \"reason\": \"size_mismatch\",\n  \"notes\": \"Second customer reports the shoe runs small.\",\n  \"created_at\": \"2026-05-20T10:05:00Z\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/returns"
+          }
+        },
+        {
+          "name": "Add Competitor Price",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sku\": \"SKU-1003\",\n  \"competitor\": \"BagOutlet\",\n  \"price\": 1799,\n  \"product_url\": \"https://example.com/bagoutlet/urbantrail-backpack\",\n  \"observed_at\": \"2026-05-20T10:10:00Z\",\n  \"confidence\": 0.96\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/competitors"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Agent Runs",
+      "item": [
+        {
+          "name": "Run Inventory Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-inventory-agent\",\n  \"lookback_days\": 30\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/agents/inventory/run"
+          }
+        },
+        {
+          "name": "Run Pricing Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-pricing-agent\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/agents/pricing/run"
+          }
+        },
+        {
+          "name": "Run Pricing Agent With Stale Reference Time",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-pricing-stale-reference\",\n  \"stale_reference_time\": true\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/agents/pricing/run"
+          }
+        },
+        {
+          "name": "Run Customer Insight Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-customer-insight-agent\",\n  \"lookback_days\": 30\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/agents/customer-insights/run"
+          }
+        },
+        {
+          "name": "Run Marketing Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-marketing-agent\",\n  \"channels\": [\"email\"]\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/agents/marketing/run"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflows",
+      "item": [
+        {
+          "name": "Run Daily Ops Workflow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-happy-flow\",\n  \"workflow_run_id\": \"demo-happy-flow\",\n  \"triggered_by\": \"manual\",\n  \"lookback_days\": 30,\n  \"channels\": [\"email\"]\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/workflows/daily-ops/run"
+          }
+        },
+        {
+          "name": "Start Temporal Daily Ops Workflow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"run_id\": \"demo-temporal-flow\",\n  \"workflow_run_id\": \"demo-temporal-flow\",\n  \"triggered_by\": \"manual\",\n  \"lookback_days\": 30,\n  \"channels\": [\"email\"]\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/workflows/daily-ops/temporal/start"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Approvals",
+      "item": [
+        {
+          "name": "List Approvals",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/approvals"
+          }
+        },
+        {
+          "name": "Approve Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decided_by\": \"ops-manager\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/approvals/{{approval_id}}/approve"
+          }
+        },
+        {
+          "name": "Reject Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"decided_by\": \"ops-manager\"\n}"
+            },
+            "url": "{{base_url}}/api/v1/ecommerce-ops/approvals/{{approval_id}}/reject"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Observability",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/observability/audit-logs"
+          }
+        },
+        {
+          "name": "List Audit Logs By Run ID",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/api/v1/ecommerce-ops/observability/audit-logs?run_id=demo-happy-flow"
+          }
+        }
+      ]
+    }
+  ]
+}
